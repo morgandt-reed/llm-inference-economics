@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# Tooling caches
+.pytest_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+htmlcov/
+
+# Editors
+.idea/
+.vscode/
+.DS_Store
+
+# Note what is deliberately NOT ignored: data/prices-*.yaml and
+# tests/golden/. The price file is the repository's evidence — it is dated,
+# sourced and committed so that a number in the README can be traced to the page
+# it came from. The golden file is the CLI's contract; regenerating it silently
+# would defeat the test that guards it.

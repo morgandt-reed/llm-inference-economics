@@ -1,0 +1,258 @@
+# Published list prices for LLM inference, per million tokens, in USD.
+#
+# PROVENANCE — read this before using any number below.
+#
+#   These are *list prices transcribed from vendor pages on the date recorded in
+#   each entry's `as_of` field*. They are not quotes, not negotiated rates, and
+#   not measurements. Nobody here ran a benchmark or received an invoice.
+#
+#   They move, and they move fast. Over the twelve months to mid-2026 the floor
+#   price for serving a frontier open-weight model fell by a large multiple, and
+#   several of the entries below are explicitly marked `promotional: true`
+#   because the price charged today is not the price on the rate card. A
+#   business case built on a promotional rate is a business case with an expiry
+#   date on it.
+#
+#   Re-check every entry against its `source_url` before you rely on it. If the
+#   file's date stamp is more than a quarter old, treat the whole thing as
+#   indicative and re-derive it.
+#
+# The schema each entry follows is documented in data/SCHEMA.md. The test suite
+# enforces the parts that matter: every entry must carry a `source_url` and an
+# `as_of` date, or the build fails.
+
+version: 1
+published: 2026-07
+description: >-
+  First-party API list prices, one aggregator floor price, open-weight licensing
+  status, and — where a public leaderboard figure exists — a single dated
+  benchmark score. Prices are USD per million tokens.
+
+models:
+  # ---------------------------------------------------------------------------
+  # Anthropic — first-party API
+  #
+  # Cached-input rates are derived from the documented prompt-caching discount
+  # (cache reads bill at approximately 0.1x the base input rate) rather than
+  # being quoted per-model on the price list. The batch discount is 50% on both
+  # input and output.
+  # ---------------------------------------------------------------------------
+  - model_id: claude-fable-5
+    display_name: Claude Fable 5
+    provider: Anthropic
+    tier: first-party
+    input_per_mtok: 10.00
+    output_per_mtok: 50.00
+    cached_input_per_mtok: 1.00
+    batch_discount: 0.50
+    context_window_tokens: 1000000
+    source_url: https://platform.claude.com/docs/en/about-claude/models/overview
+    as_of: 2026-08-01
+    open_weights:
+      available: false
+    notes: >-
+      Cached-input rate derived from the documented ~0.1x cache-read discount,
+      not quoted separately on the price list.
+
+  - model_id: claude-opus-5
+    display_name: Claude Opus 5
+    provider: Anthropic
+    tier: first-party
+    input_per_mtok: 5.00
+    output_per_mtok: 25.00
+    cached_input_per_mtok: 0.50
+    batch_discount: 0.50
+    context_window_tokens: 1000000
+    source_url: https://platform.claude.com/docs/en/about-claude/models/overview
+    as_of: 2026-08-01
+    open_weights:
+      available: false
+    benchmark:
+      name: SWE-bench Pro
+      score: 79.2
+      as_of: 2026-08-01
+      source_url: https://llm-stats.com/benchmarks/swe-bench-pro
+      notes: >-
+        Vendor-aggregate leaderboard. Different standardisations of this
+        benchmark report materially different numbers for the same model — see
+        docs/adr/0003-reading-vendor-benchmarks.md.
+
+  - model_id: claude-opus-4-8
+    display_name: Claude Opus 4.8
+    provider: Anthropic
+    tier: first-party
+    input_per_mtok: 5.00
+    output_per_mtok: 25.00
+    cached_input_per_mtok: 0.50
+    batch_discount: 0.50
+    context_window_tokens: 1000000
+    source_url: https://platform.claude.com/docs/en/about-claude/models/overview
+    as_of: 2026-08-01
+    open_weights:
+      available: false
+    benchmark:
+      name: SWE-bench Pro
+      score: 69.2
+      as_of: 2026-08-01
+      source_url: https://llm-stats.com/benchmarks/swe-bench-pro
+      notes: Vendor-aggregate leaderboard.
+
+  - model_id: claude-sonnet-5
+    display_name: Claude Sonnet 5
+    provider: Anthropic
+    tier: first-party
+    input_per_mtok: 3.00
+    output_per_mtok: 15.00
+    cached_input_per_mtok: 0.30
+    batch_discount: 0.50
+    context_window_tokens: 1000000
+    source_url: https://platform.claude.com/docs/en/about-claude/models/overview
+    as_of: 2026-08-01
+    open_weights:
+      available: false
+    notes: >-
+      An introductory rate of $2.00 / $10.00 per Mtok applies through
+      2026-08-31. The list price is recorded here deliberately: a plan sized on
+      an introductory rate is a plan that reprices on a date somebody else
+      chose.
+
+  - model_id: claude-haiku-4-5
+    display_name: Claude Haiku 4.5
+    provider: Anthropic
+    tier: first-party
+    input_per_mtok: 1.00
+    output_per_mtok: 5.00
+    cached_input_per_mtok: 0.10
+    batch_discount: 0.50
+    context_window_tokens: 200000
+    source_url: https://platform.claude.com/docs/en/about-claude/models/overview
+    as_of: 2026-08-01
+    open_weights:
+      available: false
+
+  # ---------------------------------------------------------------------------
+  # Open-weight models — first-party APIs
+  #
+  # These are the comparators that matter for a self-hosting decision. See
+  # docs/adr/0001-what-self-hosting-competes-with.md: if you are considering
+  # running GLM-5.2 on your own hardware, the price to beat is GLM-5.2's own
+  # API, not a frontier model's.
+  # ---------------------------------------------------------------------------
+  - model_id: glm-5.2
+    display_name: GLM-5.2 (Z.ai first-party)
+    provider: Z.ai
+    tier: first-party
+    input_per_mtok: 1.40
+    output_per_mtok: 4.40
+    cached_input_per_mtok: 0.26
+    batch_discount: null
+    context_window_tokens: 1000000
+    source_url: https://z.ai/
+    as_of: 2026-08-01
+    open_weights:
+      available: true
+      license: MIT
+      license_url: https://opensource.org/licenses/MIT
+    benchmark:
+      name: SWE-bench Pro
+      score: 62.1
+      as_of: 2026-08-01
+      source_url: https://llm-stats.com/benchmarks/swe-bench-pro
+      notes: Highest-scoring open-weight model on this leaderboard at the as-of date.
+    notes: >-
+      No batch discount verified at the as-of date. The model layer therefore
+      applies no batch reduction to this entry — see data/SCHEMA.md on how
+      absent fields are treated.
+
+  - model_id: kimi-k2.6
+    display_name: Kimi K2.6
+    provider: Moonshot AI
+    tier: first-party
+    input_per_mtok: 0.95
+    output_per_mtok: 4.00
+    cached_input_per_mtok: null
+    batch_discount: null
+    source_url: https://platform.moonshot.ai/docs/pricing
+    as_of: 2026-08-01
+    open_weights:
+      available: true
+      license: Modified MIT
+      license_url: https://huggingface.co/moonshotai
+    notes: >-
+      No cache-hit input rate verified at the as-of date, so `cached_input_per_mtok`
+      is null and the model charges the full input rate for cache hits. That is a
+      deliberately pessimistic default: an unverified discount is not a discount.
+      If your route does offer cached-input pricing, add the rate here.
+
+  - model_id: kimi-k3
+    display_name: Kimi K3
+    provider: Moonshot AI
+    tier: first-party
+    input_per_mtok: 3.00
+    output_per_mtok: 15.00
+    cached_input_per_mtok: 0.30
+    batch_discount: null
+    context_window_tokens: 1000000
+    source_url: https://platform.moonshot.ai/docs/pricing
+    as_of: 2026-08-01
+    open_weights:
+      available: true
+      license: Modified MIT
+      license_url: https://huggingface.co/moonshotai
+    notes: >-
+      Roughly three times K2.6's rate card. Worth noting against the assumption
+      that open-weight API prices only ever fall: within one vendor's own
+      line-up, a newer and larger model repriced upward.
+
+  - model_id: qwen3.7-max
+    display_name: Qwen3.7 Max
+    provider: Alibaba Cloud
+    tier: first-party
+    input_per_mtok: 1.25
+    output_per_mtok: 3.75
+    cached_input_per_mtok: 0.25
+    batch_discount: null
+    promotional: true
+    context_window_tokens: 1000000
+    source_url: https://www.alibabacloud.com/en/product/modelstudio
+    as_of: 2026-08-01
+    open_weights:
+      available: false
+    notes: >-
+      Promotional rate at 50% off; the standard list price is $2.50 / $7.50 per
+      Mtok. Marked promotional so the CLI flags it. Note also that this model is
+      API-only — no downloadable weights — so it is not a self-hosting candidate
+      at all, whatever its price does. The open-weight Qwen line is a different,
+      smaller family of models under Apache-2.0.
+
+  # ---------------------------------------------------------------------------
+  # Aggregator / gateway route
+  #
+  # One entry, to make the three-way comparison in the README concrete. This is
+  # the cheapest listed provider for the model on a routing marketplace, not a
+  # committed rate: the marketplace routes on price, providers enter and leave,
+  # and the floor is whatever the most aggressive provider is charging this week.
+  # ---------------------------------------------------------------------------
+  - model_id: glm-5.2-aggregator
+    display_name: GLM-5.2 (cheapest aggregator route)
+    provider: OpenRouter
+    tier: aggregator
+    input_per_mtok: 0.7168
+    output_per_mtok: 2.253
+    cached_input_per_mtok: null
+    batch_discount: null
+    promotional: true
+    source_url: https://openrouter.ai/z-ai/glm-5.2
+    as_of: 2026-08-01
+    open_weights:
+      available: true
+      license: MIT
+      license_url: https://opensource.org/licenses/MIT
+    notes: >-
+      Lowest listed per-token price across providers at the as-of date, quoted
+      with a promotional discount applied. No cached-input rate was verified, so
+      the model charges the full input rate for cache hits — which is why this
+      route scores worse than the first-party API on a cache-heavy agentic
+      profile despite a lower headline price. That inversion is the point: a
+      headline per-token number does not rank routes for a workload whose input
+      is mostly cache reads.

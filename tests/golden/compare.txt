@@ -1,0 +1,55 @@
+Cost per developer-month — intensive profile, 500 developers
+Price data: prices-2026-07.yaml (published 2026-07)
+
+Assumptions — every one of these is an input you can change:
+  Token profile      intensive: 500 Mtok in / 15 Mtok out per developer-month, 85% cache hits
+  Head count         500 developers
+  Node               8x H200 SXM (owned, colocated) — $370,000 over 36 months
+  Node capacity      40 nameplate x 60% utilisation = 24.0 effective developers per node
+  Node monthly cost  $12,729 (amortisation $10,278 + energy $1,251 + hosting $1,200)
+  Platform team      2 FTE at $15,000/month = $30,000/month
+  Redundancy         1 node(s) carrying full cost and no capacity
+  Batch traffic      0% of traffic routed through a batch endpoint
+
+BUY — published API list prices
+
+Route                                 Provider       Tier         $/dev-month  Weights
+------------------------------------  -------------  -----------  -----------  ------------
+Claude Haiku 4.5                      Anthropic      first-party      $192.50  API only
+Qwen3.7 Max*                          Alibaba Cloud  first-party      $256.25  API only
+GLM-5.2 (Z.ai first-party)            Z.ai           first-party      $281.50  MIT
+GLM-5.2 (cheapest aggregator route)*  OpenRouter     aggregator       $392.19  MIT
+Kimi K2.6                             Moonshot AI    first-party      $535.00  Modified MIT
+Claude Sonnet 5                       Anthropic      first-party      $577.50  API only
+Kimi K3                               Moonshot AI    first-party      $577.50  Modified MIT
+Claude Opus 4.8                       Anthropic      first-party      $962.50  API only
+Claude Opus 5                         Anthropic      first-party      $962.50  API only
+Claude Fable 5                        Anthropic      first-party    $1,925.00  API only
+
+  * promotional rate, not the rate card. See the notes in the price file.
+
+BUILD — self-hosted open-weight model, on your own hardware
+
+Measure                                              Value
+---------------------------  -----------------------------
+Nodes required               22 (21 serving + 1 redundant)
+Total monthly cost                                $310,032
+Cost per developer at 500                          $620.06
+Marginal cost per developer                        $530.36
+
+  The marginal cost is the floor. Adding developers dilutes the platform team
+  and the redundant node, but never takes the per-developer cost below it.
+
+VERDICT — against every route whose weights you could actually run
+
+Its own API                          API $/dev  Self-host $/dev  Ratio  Verdict
+-----------------------------------  ---------  ---------------  -----  ---------------------
+GLM-5.2 (Z.ai first-party)             $281.50          $620.06  2.20x  never breaks even
+GLM-5.2 (cheapest aggregator route)    $392.19          $620.06  1.58x  never breaks even
+Kimi K2.6                              $535.00          $620.06  1.16x  more expensive at 500
+Kimi K3                                $577.50          $620.06  1.07x  more expensive at 500
+
+  Self-hosting an open-weight model competes against that model's own API,
+  not against a frontier model's price. Comparing it to the frontier price is
+  the comparison that manufactures a business case out of nothing.
+  See docs/adr/0001-what-self-hosting-competes-with.md.

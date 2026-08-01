@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "inference-economics"
+version = "0.1.0"
+description = "A parameterised build-vs-buy model for LLM inference, with versioned price data"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Morgan Reed" }]
+dependencies = [
+    "click>=8.1",
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "ruff==0.6.9",
+]
+
+[project.scripts]
+inference-econ = "inference_economics.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+# Pinned explicitly rather than left to ruff's defaults: the default rule set
+# changes between releases, which turns a green build red without a commit.
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle
+    "F",   # pyflakes
+    "I",   # import sorting
+    "UP",  # pyupgrade
+    "B",   # bugbear
+    "A",   # builtin shadowing
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q --cov=inference_economics --cov-report=term-missing --cov-fail-under=95"
