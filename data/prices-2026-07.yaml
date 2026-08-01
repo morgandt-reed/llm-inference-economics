@@ -50,6 +50,15 @@ models:
     as_of: 2026-08-01
     open_weights:
       available: false
+    benchmark:
+      name: SWE-bench Pro
+      score: 80.0
+      as_of: 2026-08-01
+      source_url: https://llm-stats.com/benchmarks/swe-bench-pro
+      notes: >-
+        Vendor-aggregate leaderboard. Different standardisations of this
+        benchmark report materially different numbers for the same model — see
+        docs/adr/0003-reading-vendor-benchmarks.md.
     notes: >-
       Cached-input rate derived from the documented ~0.1x cache-read discount,
       not quoted separately on the price list.
@@ -67,15 +76,6 @@ models:
     as_of: 2026-08-01
     open_weights:
       available: false
-    benchmark:
-      name: SWE-bench Pro
-      score: 79.2
-      as_of: 2026-08-01
-      source_url: https://llm-stats.com/benchmarks/swe-bench-pro
-      notes: >-
-        Vendor-aggregate leaderboard. Different standardisations of this
-        benchmark report materially different numbers for the same model — see
-        docs/adr/0003-reading-vendor-benchmarks.md.
 
   - model_id: claude-opus-4-8
     display_name: Claude Opus 4.8
@@ -158,7 +158,10 @@ models:
       score: 62.1
       as_of: 2026-08-01
       source_url: https://llm-stats.com/benchmarks/swe-bench-pro
-      notes: Highest-scoring open-weight model on this leaderboard at the as-of date.
+      notes: >-
+        Ranked tenth overall on this leaderboard at the as-of date. Whether it is
+        the highest-scoring model with downloadable weights is not something the
+        page states, so this file does not claim it.
     notes: >-
       No batch discount verified at the as-of date. The model layer therefore
       applies no batch reduction to this entry — see data/SCHEMA.md on how
@@ -237,8 +240,8 @@ models:
     display_name: GLM-5.2 (cheapest aggregator route)
     provider: OpenRouter
     tier: aggregator
-    input_per_mtok: 0.7168
-    output_per_mtok: 2.253
+    input_per_mtok: 0.42
+    output_per_mtok: 1.32
     cached_input_per_mtok: null
     batch_discount: null
     promotional: true
@@ -249,10 +252,9 @@ models:
       license: MIT
       license_url: https://opensource.org/licenses/MIT
     notes: >-
-      Lowest listed per-token price across providers at the as-of date, quoted
-      with a promotional discount applied. No cached-input rate was verified, so
-      the model charges the full input rate for cache hits — which is why this
-      route scores worse than the first-party API on a cache-heavy agentic
-      profile despite a lower headline price. That inversion is the point: a
-      headline per-token number does not rank routes for a workload whose input
-      is mostly cache reads.
+      Lowest listed per-token price on the linked page at the as-of date. The
+      page shows these rates under a 70%-off promotion, so they are a discount
+      window and not a rate card — a business case resting on them has an expiry
+      date. No cached-input rate was verified for this route, so the model
+      charges the full input rate for cache hits; the true cost of a cache-heavy
+      profile here is therefore lower than this file can justify claiming.

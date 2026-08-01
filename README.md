@@ -94,9 +94,9 @@ BUY — published API list prices
 Route                                 Provider       Tier         $/dev-month  Weights
 ------------------------------------  -------------  -----------  -----------  ------------
 Claude Haiku 4.5                      Anthropic      first-party      $192.50  API only
+GLM-5.2 (cheapest aggregator route)*  OpenRouter     aggregator       $229.80  MIT
 Qwen3.7 Max*                          Alibaba Cloud  first-party      $256.25  API only
 GLM-5.2 (Z.ai first-party)            Z.ai           first-party      $281.50  MIT
-GLM-5.2 (cheapest aggregator route)*  OpenRouter     aggregator       $392.19  MIT
 Kimi K2.6                             Moonshot AI    first-party      $535.00  Modified MIT
 Claude Sonnet 5                       Anthropic      first-party      $577.50  API only
 Kimi K3                               Moonshot AI    first-party      $577.50  Modified MIT
@@ -123,7 +123,7 @@ VERDICT — against every route whose weights you could actually run
 Its own API                          API $/dev  Self-host $/dev  Ratio  Verdict
 -----------------------------------  ---------  ---------------  -----  ---------------------
 GLM-5.2 (Z.ai first-party)             $281.50          $620.06  2.20x  never breaks even
-GLM-5.2 (cheapest aggregator route)    $392.19          $620.06  1.58x  never breaks even
+GLM-5.2 (cheapest aggregator route)    $229.80          $620.06  2.70x  never breaks even
 Kimi K2.6                              $535.00          $620.06  1.16x  more expensive at 500
 Kimi K3                                $577.50          $620.06  1.07x  more expensive at 500
 ```
@@ -133,13 +133,14 @@ Three things in that output are worth pausing on.
 **The self-hosted marginal cost ($530.36) is above GLM-5.2's own API price
 ($281.50).** That single inequality is the conclusion. No head count fixes it.
 
-**The cheapest aggregator route scores *worse* than the first-party API despite a
-lower headline per-token price** — $392.19 against $281.50. No cached-input rate
-was verified for that route, so the model charges the full input price for cache
-hits, and on a workload that is 85% cache reads that dominates everything else. A
-headline per-token number does not rank routes for a cache-heavy workload. If
-your aggregator route does support prompt caching, add the rate to the price file
-and the ordering changes.
+**The cheapest aggregator route comes out ahead of the first-party API** —
+$229.80 against $281.50 — but read the asterisk before using it. Those rates are
+a promotion, not a rate card, so the gap has an expiry date. And no cached-input
+rate was verified for that route, so the model charges full input price for cache
+hits on a profile that is 85% cache reads: the true figure is lower than this
+repository can justify printing. The comparison is doing something useful anyway,
+which is telling you the two numbers are close enough that the decision turns on
+contract terms rather than on arithmetic.
 
 **Kimi K3 costs more than Kimi K2.6 from the same vendor** — $577.50 against
 $535.00, roughly triple the rate card. Worth noting against the assumption that
